@@ -28,7 +28,7 @@ RUN upx main
 # use a minimal alpine image
 FROM alpine:3.7
 # add ca-certificates in case you need them
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk add --no-cache ca-certificates
 # set working directory
 WORKDIR /root
 # copy the binary from builder
