@@ -8,18 +8,18 @@ ADD https://github.com/upx/upx/releases/download/v3.94/upx-3.94-amd64_linux.tar.
 RUN xz -d -c /usr/local/upx-3.94-amd64_linux.tar.xz | \
     tar -xOf - upx-3.94-amd64_linux/upx > /bin/upx && \
     chmod a+x /bin/upx
-# install glide
-RUN go get github.com/Masterminds/glide
-# setup the working directory
+# install dep
+RUN go get github.com/golang/dep/cmd/dep
+# create a working directory
 WORKDIR /go/src/app
-ADD glide.yaml glide.yaml
-ADD glide.lock glide.lock
-# install dependencies
-RUN glide install
+# add Gopkg.toml and Gopkg.lock
+ADD Gopkg.toml Gopkg.toml
+ADD Gopkg.lock Gopkg.lock
+# install packages
+RUN dep ensure --vendor-only
 # add source code
 ADD src src
 # build the source
-RUN go build src/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main src/main.go
 # strip and compress the binary
 RUN strip --strip-unneeded main

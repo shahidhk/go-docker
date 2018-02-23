@@ -1,13 +1,13 @@
 FROM golang:1.8.5-jessie
-# install glide
-RUN go get github.com/Masterminds/glide
+# install dep
+RUN go get github.com/golang/dep/cmd/dep
 # create a working directory
 WORKDIR /go/src/app
-# add glide.yaml and glide.lock
-ADD glide.yaml glide.yaml
-ADD glide.lock glide.lock
+# add Gopkg.toml and Gopkg.lock
+ADD Gopkg.toml Gopkg.toml
+ADD Gopkg.lock Gopkg.lock
 # install packages
-RUN glide install
+RUN dep ensure --vendor-only
 # add source code
 ADD src src
 # build main.go
