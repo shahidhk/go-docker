@@ -19,7 +19,6 @@ RUN glide install
 # add source code
 ADD src src
 # build the source
-RUN go build src/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main src/main.go
 # strip and compress the binary
 RUN strip --strip-unneeded main
@@ -28,7 +27,7 @@ RUN upx main
 # use a minimal alpine image
 FROM alpine:3.7
 # add ca-certificates in case you need them
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk add --no-cache ca-certificates
 # set working directory
 WORKDIR /root
 # copy the binary from builder

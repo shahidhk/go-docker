@@ -10,7 +10,6 @@ RUN glide install
 # add source code
 ADD src src
 # build the source
-RUN go build src/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main src/main.go
 
 # use a minimal alpine image

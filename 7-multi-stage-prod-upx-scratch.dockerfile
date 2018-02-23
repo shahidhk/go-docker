@@ -19,7 +19,6 @@ RUN glide install
 # add source code
 ADD src src
 # build the source
-RUN go build src/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main src/main.go
 # strip and compress the binary
 RUN strip --strip-unneeded main
